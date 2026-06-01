@@ -27,22 +27,22 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "r1",
-        url: "https://lh3.googleusercontent.com/d/1hk2tu6pl8-CL8cvEbIOefGrpuFo0hUU-",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780340869/01_zfzmtu.mp4",
         caption: "Cobertura dinâmica em tempo real para a Convenção Rede 28"
       },
       {
         id: "r2",
-        url: "https://lh3.googleusercontent.com/d/13DIGOW0LsXpAt7iXf-OVUvn9yLPW1UHO",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780340868/02_m4qnae.mp4",
         caption: "Cortes rápidos e dinâmicos de alta energia focados em branding corporativo"
       },
       {
         id: "r3",
-        url: "https://lh3.googleusercontent.com/d/1ehNndjlVKFlKPsqEae4T-YPM5b31t2Es",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780340874/03_hegq9u.mp4",
         caption: "Transições inteligentes e filmagem 100% mobile otimizada para o Instagram"
       },
       {
         id: "r4",
-        url: "https://lh3.googleusercontent.com/d/1umjsVHtWQ93S4frjJzYEjMoCaUze3hLZ",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780340867/04_yzkked.mp4",
         caption: "Entrega em tempo recorde mantendo as redes sociais aquecidas do início ao fim"
       }
     ]

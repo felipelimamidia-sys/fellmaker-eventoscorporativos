@@ -92,6 +92,37 @@ function getGoogleDriveEmbedUrl(url: string) {
   return url;
 }
 
+// Extract Google Drive ID to generate direct streaming link for HTML5 <video>
+function getGoogleDriveStreamUrl(url: string) {
+  if (!url) return "";
+  let id = "";
+  if (url.includes("lh3.googleusercontent.com/d/")) {
+    const parts = url.split("/d/");
+    if (parts.length > 1) {
+      id = parts[1].split(/[?#]/)[0];
+    }
+  } else if (url.includes("drive.google.com")) {
+    const regExp = /\/file\/d\/([a-zA-Z0-9_-]+)/;
+    const matches = url.match(regExp);
+    if (matches && matches[1]) {
+      id = matches[1];
+    } else {
+      try {
+        const urlObj = new URL(url);
+        id = urlObj.searchParams.get("id") || "";
+      } catch (e) {
+        if (url.includes("id=")) {
+          id = url.split("id=")[1].split(/[&?#]/)[0];
+        }
+      }
+    }
+  }
+  if (id) {
+    return `https://drive.google.com/uc?export=download&id=${id}`;
+  }
+  return url;
+}
+
 export default function App() {
   // Navigation & Scrolling states
   const [isScrolled, setIsScrolled] = useState(false);
@@ -104,9 +135,13 @@ export default function App() {
   const [storyProgress, setStoryProgress] = useState<number>(0);
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
 
+  // Native Google Drive video playback fallback tracker
+  const [googleDriveFailedNatively, setGoogleDriveFailedNatively] = useState<Record<string, boolean>>({});
+
   // Computed Values
   const storyUrl = activeHighlight?.stories[activeStoryIndex]?.url || "";
   const isGoogleDriveUrl = storyUrl.includes("drive.google.com") || storyUrl.includes("googleusercontent.com");
+  const showIframeForStory = isGoogleDriveUrl && googleDriveFailedNatively[storyUrl];
 
   // References and Interval Timers
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -147,7 +182,7 @@ export default function App() {
     const stepTime = 30;
     progressIntervalRef.current = window.setInterval(() => {
       // Direct guard to skip timer ticks if video is paused, still buffer loading, or a Google Drive video
-      if (isPaused || isVideoLoading || isGoogleDriveUrl) {
+      if (isPaused || isVideoLoading || showIframeForStory) {
         return;
       }
 
@@ -167,7 +202,7 @@ export default function App() {
         window.clearInterval(progressIntervalRef.current);
       }
     };
-  }, [activeHighlight, activeStoryIndex, isPaused, isVideoLoading, isGoogleDriveUrl]);
+  }, [activeHighlight, activeStoryIndex, isPaused, isVideoLoading, showIframeForStory]);
 
   // Sync mute state with video element
   useEffect(() => {
@@ -766,7 +801,7 @@ export default function App() {
                       if (index < activeStoryIndex) {
                         fillPercentage = 100;
                       } else if (index === activeStoryIndex) {
-                        fillPercentage = isGoogleDriveUrl ? 100 : storyProgress;
+                        fillPercentage = showIframeForStory ? 100 : storyProgress;
                       }
 
                       return (
@@ -776,7 +811,7 @@ export default function App() {
                             style={{ 
                               width: `${fillPercentage}%`,
                               // Disable transition resets to ensure snap responsive jumps
-                              transitionDuration: index === activeStoryIndex && !isVideoLoading && !isGoogleDriveUrl ? "30ms" : "0ms"
+                              transitionDuration: index === activeStoryIndex && !isVideoLoading && !showIframeForStory ? "30ms" : "0ms"
                             }}
                           ></div>
                         </div>
@@ -812,7 +847,7 @@ export default function App() {
                     {/* Interactive Widgets row inside Story */}
                     <div className="flex items-center gap-3 bg-black/25 px-2 py-1 rounded-full border border-white/5">
                       
-                      {!isGoogleDriveUrl && (
+                      {!showIframeForStory && (
                         <>
                           {/* Play / Pause Toggle button */}
                           <button 
@@ -854,7 +889,7 @@ export default function App() {
                   <button 
                     onClick={(e) => { e.stopPropagation(); handlePrevStory(); }}
                     className={`absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 items-center justify-center hover:bg-slate-900 transition-all text-white focus:outline-none cursor-pointer ${
-                      isGoogleDriveUrl ? "flex" : "hidden md:flex"
+                      showIframeForStory ? "flex" : "hidden md:flex"
                     }`}
                   >
                     <ChevronLeft className="w-5 h-5" />
@@ -864,14 +899,14 @@ export default function App() {
                   <button 
                     onClick={(e) => { e.stopPropagation(); handleNextStory(); }}
                     className={`absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 items-center justify-center hover:bg-slate-900 transition-all text-white focus:outline-none cursor-pointer ${
-                      isGoogleDriveUrl ? "flex" : "hidden md:flex"
+                      showIframeForStory ? "flex" : "hidden md:flex"
                     }`}
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
 
                   {/* LEFT AND RIGHT TOUCH ZONES (Mobile-focused invisible overlays) */}
-                  {!isGoogleDriveUrl && (
+                  {!showIframeForStory && (
                     <div className="absolute inset-0 z-10 flex">
                       {/* Left Tap target */}
                       <div 
@@ -919,19 +954,18 @@ export default function App() {
                   )}
 
                   {/* TRUE MP4 REAL-STREAM VIDEO OBJECT OR GOOGLE DRIVE EMBED */}
-                  {isGoogleDriveUrl ? (
+                  {showIframeForStory ? (
                     <iframe
                       src={getGoogleDriveEmbedUrl(storyUrl)}
                       className="w-full h-full border-0 bg-slate-950 rounded-b-2xl"
-                      allow="autoplay; encrypted-media"
+                      allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                       title={activeHighlight.stories[activeStoryIndex]?.caption}
-                      referrerPolicy="no-referrer"
                       onLoad={() => setIsVideoLoading(false)}
                     />
                   ) : (
                     <video 
                       ref={videoRef}
-                      src={storyUrl}
+                      src={isGoogleDriveUrl ? getGoogleDriveStreamUrl(storyUrl) : storyUrl}
                       className="w-full h-full object-cover"
                       playsInline
                       autoPlay={!isPaused}
@@ -941,11 +975,18 @@ export default function App() {
                       onPlaying={handleVideoCanPlay}
                       onCanPlay={handleVideoCanPlay}
                       onEnded={handleNextStory}
+                      onError={(e) => {
+                        console.warn("Direct stream failed natively, switching to iframe fallback.", e);
+                        if (isGoogleDriveUrl) {
+                          setGoogleDriveFailedNatively((prev) => ({ ...prev, [storyUrl]: true }));
+                        }
+                        setIsVideoLoading(false);
+                      }}
                     />
                   )}
 
                   {/* Overlay indicating Muted state */}
-                  {!isGoogleDriveUrl && isMuted && (
+                  {!showIframeForStory && isMuted && (
                     <button 
                       onClick={(e) => { e.stopPropagation(); setIsMuted(false); }}
                       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 bg-black/60 backdrop-blur-md border border-white/10 rounded-full px-5 py-3 hover:bg-slate-950 hover:border-secondary flex items-center gap-2.5 shadow-xl animate-fade-in group cursor-pointer"
