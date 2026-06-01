@@ -55,28 +55,23 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "b1",
-        url: "https://lh3.googleusercontent.com/d/151GOm7XSil5jDQBMOIJPeTWx-GCxwmJJ",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341391/01_blxkam.mov",
         caption: "A energia vibrante do maior evento de beleza e estética nacional"
       },
       {
         id: "b2",
-        url: "https://lh3.googleusercontent.com/d/1izrdf3of3fLh-bMugIFoPSzKcVsVy4ti",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341407/03_opeymw.mov",
         caption: "Captura de detalhes preciosos, texturas e maquiagem com precisão móvel"
       },
       {
         id: "b3",
-        url: "https://lh3.googleusercontent.com/d/1rUSBmSayWb3ExhhziAeG0hYvZh0haAZC",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341399/05_yzi27r.mov",
         caption: "Interações rápidas e dinâmicas nos stands mais movimentados do evento"
       },
       {
         id: "b4",
-        url: "https://lh3.googleusercontent.com/d/14OCkdKRbj115Z9k7PDkO5LlqkZX7C1Op",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341410/02_rprrq2.mov",
         caption: "Presets cinematográficos e cortes rápidos para máxima retenção de atenção"
-      },
-      {
-        id: "b5",
-        url: "https://lh3.googleusercontent.com/d/1ruH7nxzybezyzdxJm8m2kr1WN8-KQxEK",
-        caption: "Entrega impecável do dia de cobertura em múltiplos formatos inovadores"
       }
     ]
   },
@@ -88,27 +83,27 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "g1",
-        url: "https://lh3.googleusercontent.com/d/1rxPk_N9Cy6TML_TOvSzUHEdXX7otOEoO",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341418/01_vpii22.mov",
         caption: "Posicionamento premium e vídeos de alta autoridade para o Dr. Gabriel Maia"
       },
       {
         id: "g2",
-        url: "https://lh3.googleusercontent.com/d/1sEWzs9Jrh9g8FfEEHTLKRlPj5hiiGeTo",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341417/02_ncrkxi.mov",
         caption: "Cortes precisos para Médicos de Resultado gerarem conexão e conversão"
       },
       {
         id: "g3",
-        url: "https://lh3.googleusercontent.com/d/13azv_rAuJlgtS23V-31L_B9GNHZzZL-t",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341417/03_m7zrhz.mov",
         caption: "Dinâmica moderna para simplificar conhecimentos complexos em formatos magnéticos"
       },
       {
         id: "g4",
-        url: "https://lh3.googleusercontent.com/d/1Poe7dbFHkGmqH_VpTAkT8lBdb8A3NTLu",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341419/04_izzp0q.mov",
         caption: "Iluminação requintada e áudio cristalino focado em redes profissionais"
       },
       {
         id: "g5",
-        url: "https://lh3.googleusercontent.com/d/19nBSHCDwXKZxto9ln95I-EMB4pabBtLR",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341419/08_yeei6u.mov",
         caption: "Roteirização e captação estética estratégica para impulsionar negócios digitais"
       }
     ]
@@ -121,28 +116,28 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "e1",
-        url: "https://lh3.googleusercontent.com/d/13rYoQt_HE-1POhCfqOlEpbw5qJIP14Yc",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341454/01_vreia1.mov",
         caption: "Energia, força e atitude captada de forma ágil com iPhone em alta taxa de frames"
       },
       {
         id: "e2",
-        url: "https://lh3.googleusercontent.com/d/12d7xx6F6euBLyUNrpnEtcCtmdno-kQHD",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341452/02_irl4x0.mov",
         caption: "Cortes ultra velozes que geram desejo imediato e valorizam a infraestrutura"
       },
       {
         id: "e3",
-        url: "https://lh3.googleusercontent.com/d/1lyPzgzxB_MDfaggK_beRhdnhg2cm6eOf",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341453/04_qh90jy.mov",
         caption: "Linguagem nativa do TikTok e Reels para impulsionar o engajamento da Evoque Academias"
       },
       {
         id: "e4",
-        url: "https://lh3.googleusercontent.com/d/1TqREKe-JLOnhzNXkxUhgL9-pi4V1M__2",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341454/08_wdiscr.mov",
         caption: "Acompanhamento dinâmico durante as sessões de treino mantendo foco estético total"
       },
       {
         id: "e5",
-        url: "https://lh3.googleusercontent.com/d/1bU8O4EHe8N7nfmKjT8-3C9l7t0M8eB3O",
-        caption: "Design sonoro envolvente casado with a intensidade dos movimentos"
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341453/05_siuzdv.mov",
+        caption: "Design sonoro envolvente casado com a intensidade dos movimentos"
       }
     ]
   },
@@ -154,27 +149,27 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "m1",
-        url: "https://lh3.googleusercontent.com/d/1M9mNU_C0IKf2XfLuvAmsecOiwtAcdEMj",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341495/1_leip8a.mov",
         caption: "Cobertura de liderança e mentoria Mulher de Alta Performance"
       },
       {
         id: "m2",
-        url: "https://lh3.googleusercontent.com/d/1KEoaLhzoGNw0oa90Vhl12rfotasMK-cp",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341494/11_s6oaf1.mp4",
         caption: "Frames polidos com foco na força, autenticidade e conexão corporativa das participantes"
       },
       {
         id: "m3",
-        url: "https://lh3.googleusercontent.com/d/1Il1EeQJFZC5iqO8NsmcHS-JN8dibdD89",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341501/3_ata33m.mov",
         caption: "Captura de feedbacks imediatos e networking ao vivo transformados em Reels magnéticos"
       },
       {
         id: "m4",
-        url: "https://lh3.googleusercontent.com/d/1lIWw6yDMWzpj8Qna_3H1e-h8YyPyM91P",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341494/2_kqcyn5.mp4",
         caption: "Visão estratégica de palco, palestrantes e emoções reais registradas na hora"
       },
       {
         id: "m5",
-        url: "https://lh3.googleusercontent.com/d/1RbYmpHyfHYCFuVA-UaApcsFFsSkhPj26",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341494/24_i4cxo9.mp4",
         caption: "Estrutura premium e valor agregado transmitido através do mobile impecável"
       }
     ]
@@ -187,27 +182,27 @@ export const HIGHLIGHTS: ClientHighlight[] = [
     stories: [
       {
         id: "a1",
-        url: "https://lh3.googleusercontent.com/d/1eKhDNPEXyCht8MEQN9yLlksctlzQOZCE",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341530/Story_1_wzit1u.mov",
         caption: "Sofisticação gourmet e amor à mesa retratados sob luz suave e captação lenta"
       },
       {
         id: "a2",
-        url: "https://lh3.googleusercontent.com/d/1i-nc9QqmiFbZ7GaHCKmG4lJbXKeqeIGk",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341531/Story_10_nvns6m.mov",
         caption: "Storytelling visual estimulante que eleva o requinte e gera desejo pelos produtos"
       },
       {
         id: "a3",
-        url: "https://lh3.googleusercontent.com/d/1nVOyM6j2-dxhclqRJXFb4wSvvjyZe1_A",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341532/Story_8_gjgw4u.mov",
         caption: "Enquadramentos macro limpos com foco na qualidade, cores e design de mesa posta"
       },
       {
         id: "a4",
-        url: "https://lh3.googleusercontent.com/d/13rQBI4jCOgeck1fBeIM1ZRqsQFmmVvl0",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341532/Story_6_xtgxom.mov",
         caption: "Textura dinâmica e transições fluidas que dão vontade de experimentar na hora"
       },
       {
         id: "a5",
-        url: "https://lh3.googleusercontent.com/d/1eV_KyaGQbSObGSMXb4Nnbe1wtw_oyXmc",
+        url: "https://res.cloudinary.com/dgzarnbl8/video/upload/v1780341530/Story_13_ekaf7e.mov",
         caption: "Direção de arte mobile refinada com foco em beleza culinária e conexão afetiva"
       }
     ]

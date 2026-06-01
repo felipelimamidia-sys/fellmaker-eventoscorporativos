@@ -948,7 +948,7 @@ export default function App() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-[11px] font-mono tracking-widest text-[#bd8653] font-bold uppercase">FELLMAKER REC</span>
-                        <span className="text-[10px] text-slate-400 mt-1">Carregando resolução 4K...</span>
+                        <span className="text-[10px] text-slate-400 mt-1">Carregando vídeo...</span>
                       </div>
                     </div>
                   )}
