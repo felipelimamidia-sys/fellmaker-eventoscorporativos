@@ -134,6 +134,7 @@ export default function App() {
   const [isMuted, setIsMuted] = useState<boolean>(true);
   const [storyProgress, setStoryProgress] = useState<number>(0);
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
+  const [currentDuration, setCurrentDuration] = useState<number>(8000);
 
   // Native Google Drive video playback fallback tracker
   const [googleDriveFailedNatively, setGoogleDriveFailedNatively] = useState<Record<string, boolean>>({});
@@ -181,17 +182,19 @@ export default function App() {
     // Timer logic running every 30ms for smooth transitions
     const stepTime = 30;
     progressIntervalRef.current = window.setInterval(() => {
-      // Direct guard to skip timer ticks if video is paused, still buffer loading, or a Google Drive video
+      // Direct guard to skip timer ticks if video is paused, still buffer loading, or an iframe Google Drive video
       if (isPaused || isVideoLoading || showIframeForStory) {
         return;
       }
 
       setStoryProgress((prev) => {
-        const nextProgress = prev + (stepTime / STORY_DURATION_MS) * 100;
-        if (nextProgress >= 100) {
-          // If 100% reached, navigate forward
+        const nextProgress = prev + (stepTime / currentDuration) * 100;
+        if (showIframeForStory && nextProgress >= 100) {
           handleNextStory();
           return 0;
+        } else if (nextProgress >= 99) {
+          // Clamp at 99% and wait for video onEnded to cleanly handle the transition
+          return 99;
         }
         return nextProgress;
       });
@@ -202,7 +205,7 @@ export default function App() {
         window.clearInterval(progressIntervalRef.current);
       }
     };
-  }, [activeHighlight, activeStoryIndex, isPaused, isVideoLoading, showIframeForStory]);
+  }, [activeHighlight, activeStoryIndex, isPaused, isVideoLoading, showIframeForStory, currentDuration]);
 
   // Sync mute state with video element
   useEffect(() => {
@@ -218,6 +221,7 @@ export default function App() {
     setIsPaused(false);
     setStoryProgress(0);
     setIsVideoLoading(true);
+    setCurrentDuration(8000); // Reset duration
     document.body.style.overflow = "hidden"; // Prevent background scroll
   };
 
@@ -247,6 +251,7 @@ export default function App() {
     }
     setStoryProgress(0);
     setIsVideoLoading(true);
+    setCurrentDuration(8000); // Reset duration
   };
 
   const handlePrevStory = () => {
@@ -271,6 +276,7 @@ export default function App() {
       }
     }
     setIsVideoLoading(true);
+    setCurrentDuration(8000); // Reset duration
   };
 
   const togglePause = () => {
@@ -845,14 +851,14 @@ export default function App() {
                     </div>
 
                     {/* Interactive Widgets row inside Story */}
-                    <div className="flex items-center gap-3 bg-black/25 px-2 py-1 rounded-full border border-white/5">
+                    <div className="flex items-center gap-3 bg-black/40 px-2.5 py-1 rounded-full border border-white/10 shadow-lg backdrop-blur-sm">
                       
                       {!showIframeForStory && (
                         <>
                           {/* Play / Pause Toggle button */}
                           <button 
                             onClick={togglePause}
-                            className="p-1 hover:text-secondary rounded transition-colors focus:outline-none"
+                            className="p-1 hover:text-secondary rounded transition-colors focus:outline-none cursor-pointer"
                             title={isPaused ? "Retomar" : "Pausar"}
                           >
                             {isPaused ? <Play className="w-4 h-4 fill-white" /> : <Pause className="w-4 h-4" />}
@@ -861,7 +867,7 @@ export default function App() {
                           {/* Mute toggle button */}
                           <button 
                             onClick={() => setIsMuted((m) => !m)}
-                            className="p-1 hover:text-secondary rounded transition-colors focus:outline-none"
+                            className="p-1 hover:text-secondary rounded transition-colors focus:outline-none cursor-pointer"
                             title={isMuted ? "Ativar som" : "Desativar som"}
                           >
                             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -869,12 +875,13 @@ export default function App() {
                         </>
                       )}
 
-                      {/* Mobile Visible Close Toggle */}
+                      {/* Close Toggle for BOTH mobile and desktop - aligned with overlayer preference */}
                       <button 
                         onClick={handleCloseHighlight}
-                        className="p-1 hover:text-secondary rounded transition-colors focus:outline-none md:hidden"
+                        className="p-1 hover:text-red-500 rounded transition-colors focus:outline-none cursor-pointer flex items-center justify-center"
+                        title="Fechar"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-4 h-4 text-white hover:text-red-500" />
                       </button>
 
                     </div>
@@ -905,39 +912,28 @@ export default function App() {
                     <ChevronRight className="w-5 h-5" />
                   </button>
 
-                  {/* LEFT AND RIGHT TOUCH ZONES (Mobile-focused invisible overlays) */}
-                  {!showIframeForStory && (
-                    <div className="absolute inset-0 z-10 flex">
-                      {/* Left Tap target */}
-                      <div 
-                        className="w-1/3 h-full cursor-w-resize active:bg-white/[0.02]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePrevStory();
-                        }}
-                        title="Anterior"
-                      ></div>
-                      
-                      {/* Centered Pause-Hold target area / Play control indicator */}
-                      <div 
-                        className="w-1/3 h-full cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          togglePause();
-                        }}
-                      ></div>
-
-                      {/* Right Tap target */}
-                      <div 
-                        className="w-1/3 h-full cursor-e-resize active:bg-white/[0.02]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleNextStory();
-                        }}
-                        title="Próximo"
-                      ></div>
-                    </div>
-                  )}
+                  {/* LEFT AND RIGHT TOUCH ZONES (Covering 100% size: 50% left & 50% right split) */}
+                  <div className="absolute inset-0 z-10 flex">
+                    {/* Left Tap target (Goes Back) */}
+                    <div 
+                      className="w-1/2 h-full cursor-w-resize active:bg-white/[0.01]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrevStory();
+                      }}
+                      title="Anterior"
+                    ></div>
+                    
+                    {/* Right Tap target (Goes Next) */}
+                    <div 
+                      className="w-1/2 h-full cursor-e-resize active:bg-white/[0.01]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNextStory();
+                      }}
+                      title="Próximo"
+                    ></div>
+                  </div>
 
                   {/* BUFFER LOADING DOCK SPINNER */}
                   {isVideoLoading && (
@@ -974,9 +970,24 @@ export default function App() {
                       onWaiting={handleVideoWaiting}
                       onPlaying={handleVideoCanPlay}
                       onCanPlay={handleVideoCanPlay}
+                      onPlay={handleVideoCanPlay}
+                      onLoadedData={handleVideoCanPlay}
+                      onLoadedMetadata={(e) => {
+                        const video = e.currentTarget;
+                        if (video.duration) {
+                          setCurrentDuration(video.duration * 1000);
+                        }
+                        handleVideoCanPlay();
+                      }}
+                      onTimeUpdate={(e) => {
+                        const video = e.currentTarget;
+                        if (video.currentTime > 0.05) {
+                          setIsVideoLoading(false);
+                        }
+                      }}
                       onEnded={handleNextStory}
-                      onError={(e) => {
-                        console.warn("Direct stream failed natively, switching to iframe fallback.", e);
+                      onError={() => {
+                        console.warn("Direct stream failed natively, switching to iframe fallback.");
                         if (isGoogleDriveUrl) {
                           setGoogleDriveFailedNatively((prev) => ({ ...prev, [storyUrl]: true }));
                         }
